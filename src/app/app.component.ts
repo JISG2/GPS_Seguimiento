@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {BackgroundGeolocation,BackgroundGeolocationConfig,BackgroundGeolocationResponse,BackgroundGeolocationEvents} from '@ionic-native/background-geolocation/ngx'
@@ -16,7 +16,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private backgroundGeolocation: BackgroundGeolocation
+    private backgroundGeolocation: BackgroundGeolocation,
+    private alert: AlertController
   ) {
     this.initializeApp();
   }
@@ -37,18 +38,30 @@ export class AppComponent {
       this.backgroundGeolocation.configure(config).then(()=>{
         this.backgroundGeolocation.on(BackgroundGeolocationEvents.location).subscribe(
           (location:BackgroundGeolocationResponse)=>{
-            var locationstr = localStorage.getItem('location');
-            if(locationstr == null){
-              this.arr.push(location);
-            }
-            else{
-              var locationarr = JSON.parse(locationstr)
-            }
-            localStorage.setItem("location",JSON.stringify(this.arr));
-          }
-        )
+            // var locationstr = localStorage.getItem('location');
+            // if(locationstr == null){
+            //   this.arr.push(location);
+            // }
+            // else{
+            //   var locationarr = JSON.parse(locationstr)
+            // }
+            // localStorage.setItem("location",JSON.stringify(this.arr));
+              //console.log(location)
+              this.showAlert(location)
+              window.position = location
+          })
       })
       window.app = this;
     });
   }
+
+  async showAlert(m:any)
+    {
+     let alert = await this.alert.create({
+       header: "Tracker",
+       message: m,
+       buttons: ['Ok']
+     });
+     await alert.present();
+    }
 }

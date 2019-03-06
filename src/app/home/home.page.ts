@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 declare var window;
 
@@ -9,18 +10,31 @@ declare var window;
 })
 export class HomePage {
   locations:any;
+  isTracking = false
 
-  constructor(){
-    this.locations = [];
 
+  constructor( private alert: AlertController){
+    this.locations = []
+   console.log("Listo para enviar tu ubicacion")
+
+  }
+
+  startTraking()
+  {
+    this.StartBackgroundTracking()
   }
 
   StartBackgroundTracking(){
-    window.app.backgorundGeolocation.start();
+    window.app.backgroundGeolocation.start().then(()=>
+   {
+     this.isTracking = true
+   })
   }
 
   StopBackgroundGeolocation(){
-    window.app.backgorundGeolocation.stop();
+    window.app.backgroundGeolocation.stop().then(()=>{
+      this.isTracking = false
+    })
   }
 
   Geolocations(){
