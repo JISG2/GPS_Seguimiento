@@ -1,5 +1,7 @@
 {
   "name": "mapa_seguimiento",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
